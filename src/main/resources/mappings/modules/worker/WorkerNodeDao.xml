@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wandun.modules.worker.dao.WorkerNodeDao">
+    <insert id="addWorkerNode" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.wandun.modules.worker.entity.WorkerNode">
+		INSERT INTO worker_node
+		(
+			hostname,
+			port,
+			type,
+			launchdate,
+			created,
+			modified
+		)
+		VALUES (
+			#{hostname},
+			#{port},
+			#{type},
+			#{launchdate},
+			NOW(),
+			NOW()
+		)
+	</insert>
+
+    <select id="getWorkerNodeByHostPort" resultType="com.wandun.modules.worker.entity.WorkerNode">
+		SELECT
+		  id,
+		  hostname,
+		  port,
+		  type,
+		  launchdate,
+		  created,
+		  modified
+		FROM
+		worker_node
+		WHERE
+		hostname = #{host} AND port = #{port}
+	</select>
+</mapper>

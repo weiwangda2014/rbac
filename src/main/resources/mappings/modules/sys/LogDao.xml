@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wandun.modules.sys.dao.LogDao">
+
+    <sql id="logColumns">
+		a.id AS "id",
+		a.type AS "type",
+		a.title AS "title",
+		a.create_date AS "createDate",
+		a.remote_addr AS "remoteAddr",
+		a.user_agent AS "userAgent",
+		a.request_uri AS "requestUri",
+		a.method AS "method",
+		a.params AS "params",
+		a.exception AS "exception"
+	</sql>
+
+    <select id="findList" resultType="Log">
+        SELECT
+		a.id AS "id",
+		a.type AS "type",
+		a.title AS "title",
+		a.create_date AS "createDate",
+		a.remote_addr AS "remoteAddr",
+		a.user_agent AS "userAgent",
+		a.request_uri AS "requestUri",
+		a.method AS "method",
+		a.params AS "params",
+		a.exception AS "exception",
+        u.id AS "createBy.id",
+        u.name AS "createBy.name",
+        c.name AS "createBy.company.name",
+        o.name AS "createBy.office.name"
+        FROM sys_log a
+        JOIN sys_user u ON u.id = a.create_by
+        JOIN sys_office c ON c.id = u.company_id
+        JOIN sys_office o ON o.id = u.office_id
+        WHERE a.create_date BETWEEN #{beginDate} AND #{endDate}
+        <if test="title != null and title != ''">
+            AND a.title LIKE
+            <if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+            <if test="dbName == 'mysql'">CONCAT('%', #{title}, '%')</if>
+        </if>
+        <if test="createBy != null and createBy.id != null and createBy.id != ''">
+            AND a.create_by = #{createBy.id}
+        </if>
+        <if test="requestUri != null and requestUri != ''">
+            AND a.request_uri LIKE
+            <if test="dbName == 'oracle'">'%'||#{requestUri}||'%'</if>
+            <if test="dbName == 'mysql'">CONCAT('%', #{requestUri}, '%')</if>
+        </if>
+        <if test="exception != null and exception != ''">
+            AND a.type = #{TYPE_EXCEPTION}
+        </if>
+        ORDER BY a.create_date DESC
+    </select>
+
+    <select id="get" resultType="Log">
+		SELECT
+			<include refid="logColumns"/>
+		FROM sys_log 
+		WHERE id = #{id}
+	</select>
+
+    <update id="delete">
+		DELETE FROM sys_log 
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteByLogic">
+		UPDATE sys_log SET
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteAll" parameterType="java.util.List">
+		DELETE FROM sys_log id in
+		<foreach collection="list" item="item" open="(" separator="," close=")">
+			     #{item}
+		</foreach>
+	</update>
+    <update id="empty">
+		TRUNCATE TABLE sys_log
+	</update>
+
+    <insert id="insert">
+		INSERT INTO sys_log(
+			id, 
+			type, 
+			title,
+			create_by, 
+			create_date, 
+			remote_addr, 
+			user_agent, 
+			request_uri, 
+			method, 
+			params, 
+			exception
+		) VALUES (
+			#{id}, 
+			#{type}, 
+			#{title}, 
+			#{createBy.id}, 
+			#{createDate}, 
+			#{remoteAddr}, 
+			#{userAgent}, 
+			#{requestUri}, 
+			#{method}, 
+			#{params}, 
+			#{exception}
+		)
+	</insert>
+</mapper>

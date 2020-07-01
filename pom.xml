@@ -36,7 +36,7 @@
         <sitemesh.version>3.0.1</sitemesh.version>
 
         <!-- tools version setting -->
-        <slf4j.version>2.13.0</slf4j.version>
+        <slf4j.version>2.13.3</slf4j.version>
 
         <commons-io.version>2.2</commons-io.version>
         <commons-codec.version>1.13</commons-codec.version>

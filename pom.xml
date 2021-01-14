@@ -47,7 +47,7 @@
         <xstream.version>1.4.11.1</xstream.version>
         <guava.version>28.1-jre</guava.version>
         <dozer.version>5.5.1</dozer.version>
-        <poi.version>3.9</poi.version>
+        <poi.version>4.1.2</poi.version>
         <aspectj.version>1.9.4</aspectj.version>
         <freemarker.version>2.3.29</freemarker.version>
         <ckfinder.version>2.3</ckfinder.version>

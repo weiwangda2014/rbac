@@ -44,7 +44,7 @@
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
         <jackson.version>2.10.3</jackson.version>
         <fastjson.version>1.2.62</fastjson.version>
-        <xstream.version>1.4.11.1</xstream.version>
+        <xstream.version>1.4.16</xstream.version>
         <guava.version>28.1-jre</guava.version>
         <dozer.version>5.5.1</dozer.version>
         <poi.version>3.9</poi.version>
